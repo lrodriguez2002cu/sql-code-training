@@ -46,21 +46,23 @@ values
 --select * from football_players
 
 
-GO 
+GO
 
 drop table if exists employee;
 
-create table employee(
+create table employee
+(
     id int PRIMARY key,
     first_name nvarchar(50),
     last_name nvarchar(50)
 )
 
 GO
-insert into employee values 
-(1	,'Steve', 'Bergman'),
-(2	,'Steve',	'Johnson'),
-(3	,'Steve',	'King')
+insert into employee
+values
+    (1	, 'Steve', 'Bergman'),
+    (2	, 'Steve', 'Johnson'),
+    (3	, 'Steve', 'King')
 
 drop table if exists customer;
 create table customer
@@ -71,10 +73,52 @@ create table customer
 )
 GO
 
-insert into customer values 
-(1, 	'Ann', 'Coleman'),
-(2, 	'Steve',	'Bergman'),
-(3, 	'Steve',	'Young'),
-(4, 	'Donna',	'Winter'),
-(5, 	'Steve',	'King')
+insert into customer
+values
+    (1, 'Ann', 'Coleman'),
+    (2, 'Steve', 'Bergman'),
+    (3, 'Steve', 'Young'),
+    (4, 'Donna', 'Winter'),
+    (5, 'Steve', 'King')
+
+GO
+drop table if exists mobile_user;
+
+create table mobile_user
+(
+    id int PRIMARY key not null,
+    first_name nvarchar(50),
+    last_name NVARCHAR(50),
+    mobile_data_limit int
+);
+
+insert  into mobile_user
+VALUES
+    (1, 'Michael', 'Watson', 5000),
+    (2, 'Nicole', 'Gomez', 10000),
+    (3, 'Sam', 'Stone', 8000)
+
+GO
+
+drop table if exists data_usage;
+
+create table data_usage
+(
+    id int PRIMARY key not null,
+    mobile_user_id int not null,
+    data_used int,
+    period nvarchar(50)
+);
+
+insert into data_usage
+values
+    (1, 1, 4987, '2022_10'),
+    (2, 2, 6875, '2022_10'),
+    (3, 3, 12547, '2022_10'),
+    (4, 1, 5037, '2022_11'),
+    (5, 2, 11111, '2022_11'),
+    (6, 3, 4897, '2022_11')
+
+--select * from data_usage
+
 

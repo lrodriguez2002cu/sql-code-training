@@ -54,3 +54,13 @@ select e.*
 from employee e
     inner join customer c
     on e.first_name = c.first_name and e.last_name = c.last_name
+
+
+--The task is to find all the data where the actual usage was above
+-- the monthly limit. We want to see the user’s first and last name,
+-- monthly limit, actual data used, and the time period.    
+
+select u.first_name, u.last_name, u.mobile_data_limit, d.data_used, d.period
+from mobile_user u
+join data_usage d
+on d.mobile_user_id = u.id and d.data_used >u.mobile_data_limit
