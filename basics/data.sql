@@ -124,98 +124,170 @@ values
 
 drop table if exists loan;
 
-create table loans(
-  loan_id int primary key not null,
-  loan_duration int not null
+create table loans
+(
+    loan_id int primary key not null,
+    loan_duration int not null
 );
 
-insert into loans values 
-(100112, 60),
-(100205,	60),
-(100208,	48),
-(100333,	120),
-(100357,	48),
-(100398,	120)
+insert into loans
+values
+    (100112, 60),
+    (100205, 60),
+    (100208, 48),
+    (100333, 120),
+    (100357, 48),
+    (100398, 120)
 
 GO
 
 drop table if exists salaries
 
-create table salaries (
-   id int primary key not null,
-  first_name nvarchar(50) not null,
-  last_name nvarchar(50),
-  salary decimal not null,
-  department nvarchar(50) 
+create table salaries
+(
+    id int primary key not null,
+    first_name nvarchar(50) not null,
+    last_name nvarchar(50),
+    salary decimal not null,
+    department nvarchar(50)
 
 );
 
-insert into salaries VALUES
-(1,	'Nicholas',	'Poirot',	4798.44,	'IT'),
-(2,	'Samantha',	'Wolf',	5419.24,	'IT'),
-(3,	'Stewart',	'Johnsons',	5419.24,	'IT'),
-(4,	'Jackie',	'Biden',	8474.54,	'Sales'),
-(5,	'Mark',	'Hamilton',	10574.84,	'Sales'),
-(6,	'Mariana',	'Costa',	9747.54,	'Sales'),
-(7,	'Paul',	'Stewart',	3498.12,	'Accounting'),
-(8,	'Mary',	'Rutte',	4187.23,	'Accounting'),
-(9,	'Thomas',	'Schwarz',	3748.55,	'Accounting')
+insert into salaries
+VALUES
+    (1, 'Nicholas', 'Poirot', 4798.44, 'IT'),
+    (2, 'Samantha', 'Wolf', 5419.24, 'IT'),
+    (3, 'Stewart', 'Johnsons', 5419.24, 'IT'),
+    (4, 'Jackie', 'Biden', 8474.54, 'Sales'),
+    (5, 'Mark', 'Hamilton', 10574.84, 'Sales'),
+    (6, 'Mariana', 'Costa', 9747.54, 'Sales'),
+    (7, 'Paul', 'Stewart', 3498.12, 'Accounting'),
+    (8, 'Mary', 'Rutte', 4187.23, 'Accounting'),
+    (9, 'Thomas', 'Schwarz', 3748.55, 'Accounting')
 
 
 drop table if exists contributors
 
-create table contributors(
+create table contributors
+(
     id int primary key not null,
     first_name nvarchar(50),
     last_name nvarchar(50),
-    start_date datetime2,	
+    start_date datetime2,
     termination_date datetime2
 )
 
 
-insert into contributors values
-(1,	'Valeria',	'Bogdanov',	'2022-10-11',	NULL),
-(2,	'Nicholas',	'Bertolucci',	'2022-04-07',	'2022-11-11'),
-(3,	'Mathilde',	'Bauman',	'2022-05-25',	'2022-10-01'),
-(4,	'Trevor',	'Trucks',	'2022-01-28',	NULL),
-(5,	'Maria',	'Szabo',	'2022-03-15',	NULL)
+insert into contributors
+values
+    (1, 'Valeria', 'Bogdanov', '2022-10-11', NULL),
+    (2, 'Nicholas', 'Bertolucci', '2022-04-07', '2022-11-11'),
+    (3, 'Mathilde', 'Bauman', '2022-05-25', '2022-10-01'),
+    (4, 'Trevor', 'Trucks', '2022-01-28', NULL),
+    (5, 'Maria', 'Szabo', '2022-03-15', NULL)
 
 
 GO
 
- drop table if exists artist
+drop table if exists artist
 
- create table artist (
+create table artist
+(
     id int primary key not null,
     artist_name nvarchar(50)
- )
+)
 
-insert into artist values
-(1,	'Prince'),
-(2,	'Jimi Hendrix'),
-(3,	'Santana'),
-(4,	'Otis Redding'),
-(5,	'Lou Rawls')
+insert into artist
+values
+    (1, 'Prince'),
+    (2, 'Jimi Hendrix'),
+    (3, 'Santana'),
+    (4, 'Otis Redding'),
+    (5, 'Lou Rawls')
 
 drop table if exists song
 
-create table song (
+create table song
+(
 
     id int primary key not null,
     artist_id int not null,
     song_title nvarchar(200)
 )
 
-insert into song values 
-(1,	1,	'Purple Rain'),
-(2,	2,	'Purple Haze'),
-(3,	3,	'Europa'),
-(4,	1,	'Cream'),
-(5,	1,	'Bambi'),
-(6,	1,	'Why You Wanna Treat Me So Bad?'),
-(7,	2,	'Spanish Castle Magic'),
-(8,	3,	'Taboo'),
-(9,	3,	'Incident at Neshabur'),
-(10,3,	'Flor D'' Luna')
+insert into song
+values
+    (1, 1, 'Purple Rain'),
+    (2, 2, 'Purple Haze'),
+    (3, 3, 'Europa'),
+    (4, 1, 'Cream'),
+    (5, 1, 'Bambi'),
+    (6, 1, 'Why You Wanna Treat Me So Bad?'),
+    (7, 2, 'Spanish Castle Magic'),
+    (8, 3, 'Taboo'),
+    (9, 3, 'Incident at Neshabur'),
+    (10, 3, 'Flor D'' Luna')
 
 
+--  subqueries
+drop table if exists products;
+
+create table products
+(
+    id int primary key not null,
+    product_name nvarchar(200),
+    quantity int not null,
+    product_category nvarchar(50)
+)
+
+insert into products
+values
+
+    (1, 'Apple MacBook Air(2020) MGN63N/A Space Gray'	, 319, 'Laptop'),
+    (2, 'Fairphone 4 128GB Green 5G'	, 208, 'Mobile phone'),
+    (3, 'Apple iMac 24" (2021) 16GB/512GB Apple M1 with 8 core GPU Silver'	, 157, 'Desktop'),
+    (4, 'HP 17-cp0971nd'	, 487, 'Laptop'),
+    (5, 'Huawei P30 Pro - 128GB - Blue'	, 148, 'Mobile phone'),
+    (6, 'Lenovo Legion T5 - AMD Ryzen 9 - 32 GB - 2TB HDD+SSD - Windows 10 Home PC', 514, 'Desktop'),
+    (7, 'Toshiba Dynabook Satellite Pro E10-S-101 Notebook'	, 207, 'Laptop'),
+    (8, 'Samsung Galaxy S23 5G - 256GB - Phantom Black'	, 56, 'Mobile phone'),
+    (9, 'Intel Compleet PC | Intel Core i7-10700'	, 459, 'Desktop')
+
+
+-- salesperson
+drop table if exists salesperson
+
+create table salesperson
+(
+    id int primary key not null,
+    first_name nvarchar(200),
+    last_name nvarchar(200)
+)
+
+insert into salesperson
+VALUES
+    (1, 'Nina', 'Lee'),
+    (2, 'Carolina', 'Green'),
+    (3, 'Mick', 'Johnson')
+
+drop table if exists sales
+
+create table sales
+(
+    id int not null,
+    salesperson_id int,
+    monthly_sales decimal,
+    period nvarchar(200)
+);
+
+insert into sales
+values
+    (1, 1, 1200.47, '2021_10'),
+    (2, 2, 5487.22, '2021_10'),
+    (3, 3, 700.47, '2021_10'),
+    (4, 1, 15747.54, '2021_11'),
+    (5, 2, 16700.87, '2021_11'),
+    (5, 3, 14322.87, '2021_11'),
+    (6, 1, 9745.55, '2021_12'),
+    (7, 2, 9600.97, '2021_12'),
+    (8, 3, 6749.58, '2021_12')
