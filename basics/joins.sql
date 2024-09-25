@@ -64,3 +64,12 @@ select u.first_name, u.last_name, u.mobile_data_limit, d.data_used, d.period
 from mobile_user u
 join data_usage d
 on d.mobile_user_id = u.id and d.data_used >u.mobile_data_limit
+
+
+SELECT
+    first_name,
+    last_name,
+    start_date,
+    termination_date
+FROM contributors
+WHERE termination_date is null or termination_date != '2022-10-01';

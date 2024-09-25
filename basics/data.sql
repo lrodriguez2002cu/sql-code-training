@@ -122,3 +122,100 @@ values
 --select * from data_usage
 
 
+drop table if exists loan;
+
+create table loans(
+  loan_id int primary key not null,
+  loan_duration int not null
+);
+
+insert into loans values 
+(100112, 60),
+(100205,	60),
+(100208,	48),
+(100333,	120),
+(100357,	48),
+(100398,	120)
+
+GO
+
+drop table if exists salaries
+
+create table salaries (
+   id int primary key not null,
+  first_name nvarchar(50) not null,
+  last_name nvarchar(50),
+  salary decimal not null,
+  department nvarchar(50) 
+
+);
+
+insert into salaries VALUES
+(1,	'Nicholas',	'Poirot',	4798.44,	'IT'),
+(2,	'Samantha',	'Wolf',	5419.24,	'IT'),
+(3,	'Stewart',	'Johnsons',	5419.24,	'IT'),
+(4,	'Jackie',	'Biden',	8474.54,	'Sales'),
+(5,	'Mark',	'Hamilton',	10574.84,	'Sales'),
+(6,	'Mariana',	'Costa',	9747.54,	'Sales'),
+(7,	'Paul',	'Stewart',	3498.12,	'Accounting'),
+(8,	'Mary',	'Rutte',	4187.23,	'Accounting'),
+(9,	'Thomas',	'Schwarz',	3748.55,	'Accounting')
+
+
+drop table if exists contributors
+
+create table contributors(
+    id int primary key not null,
+    first_name nvarchar(50),
+    last_name nvarchar(50),
+    start_date datetime2,	
+    termination_date datetime2
+)
+
+
+insert into contributors values
+(1,	'Valeria',	'Bogdanov',	'2022-10-11',	NULL),
+(2,	'Nicholas',	'Bertolucci',	'2022-04-07',	'2022-11-11'),
+(3,	'Mathilde',	'Bauman',	'2022-05-25',	'2022-10-01'),
+(4,	'Trevor',	'Trucks',	'2022-01-28',	NULL),
+(5,	'Maria',	'Szabo',	'2022-03-15',	NULL)
+
+
+GO
+
+ drop table if exists artist
+
+ create table artist (
+    id int primary key not null,
+    artist_name nvarchar(50)
+ )
+
+insert into artist values
+(1,	'Prince'),
+(2,	'Jimi Hendrix'),
+(3,	'Santana'),
+(4,	'Otis Redding'),
+(5,	'Lou Rawls')
+
+drop table if exists song
+
+create table song (
+
+    id int primary key not null,
+    artist_id int not null,
+    song_title nvarchar(200)
+)
+
+insert into song values 
+(1,	1,	'Purple Rain'),
+(2,	2,	'Purple Haze'),
+(3,	3,	'Europa'),
+(4,	1,	'Cream'),
+(5,	1,	'Bambi'),
+(6,	1,	'Why You Wanna Treat Me So Bad?'),
+(7,	2,	'Spanish Castle Magic'),
+(8,	3,	'Taboo'),
+(9,	3,	'Incident at Neshabur'),
+(10,3,	'Flor D'' Luna')
+
+
