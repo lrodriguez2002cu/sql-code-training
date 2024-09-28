@@ -122,5 +122,3 @@ where
   and  (total_rows/2 +1))
 )
 
-
-
