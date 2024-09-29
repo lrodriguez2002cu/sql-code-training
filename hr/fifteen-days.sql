@@ -141,7 +141,7 @@ with
         group by submission_date, s.hacker_id, h.name
     )
 
-select submission_date, total_unique_hackers, hacker_id, name
+select cast (submission_date as date) , total_unique_hackers, hacker_id, name
 from ranking_by_date
 where rank_a_day = 1
 order by submission_date
@@ -161,3 +161,4 @@ from submissions
 -- 2016-03-04 2 20703 Angela
 -- 2016-03-05 1 36396 Frank
 -- 2016-03-06 1 20703 Angela
+
