@@ -72,9 +72,7 @@ SELECT TOP 1
     WHERE row_num IN (total_rows / 2, total_rows / 2 + 1))
         END, 
     4) AS median_LAT_N
-FROM ranking
-;
-
+FROM ranking;
 
 -- solution
 with
@@ -92,11 +90,9 @@ from ranking r
 where
 (total_rows%2 <> 0
     and (r.row_num 
-    between (total_rows/2 +1) 
-    and (total_rows/2 + 1)
+    between (total_rows/2 + 1)  and (total_rows/2 + 1)
 ))
     or (total_rows %2 = 0
-    and (r.row_num between (total_rows/2) 
-  and  (total_rows/2 +1))
+    and (r.row_num between (total_rows/2)  and  (total_rows/2 + 1))
 )
 
