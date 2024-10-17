@@ -5,9 +5,9 @@
 --Note: 
 --Print NULL when there are no more names corresponding to an occupation.
 
-drop table if exists OCCUPATIONS;
+drop table if exists occupations;
 
-create table OCCUPATIONS
+create table occupations
 (
     name nvarchar(200),
     occupation nvarchar(200)
