@@ -99,10 +99,10 @@ values
 
 -- Samantha interviews many candidates from different colleges using
 -- coding challenges and contests.
---  Write a query to print the
--- contest_id, hacker_id, name, and the sums of total_submissions, total_accepted_submissions, total_views, 
--- and total_unique_views
+--  Write a query to print the contest_id, hacker_id, name, and the sums of total_submissions, 
+-- total_accepted_submissions, total_views,  and total_unique_views
 -- for each contest sorted by contest_id. 
+
 -- Exclude the contest from the result  if all four sums are 0.
 
 -- Note:
@@ -130,7 +130,8 @@ with
         from view_stats v
         group by v.challenge_id
     ),
-    stats -- all stats
+    stats
+    -- all stats
     as
     (
         select ch.challenge_id, ch.college_id,
@@ -152,7 +153,7 @@ from stats s
     inner join colleges col on s.college_id = col.college_id
     inner join contests c on c.contest_id = col.contest_id
 group by c.contest_id, hacker_id, name
- having 
+having 
  (   
      sum(ISNULL(s.sum_total_submissions, 0)) + 
      sum(ISNULL(s.sum_total_accepted_submissions, 0)) +
