@@ -111,34 +111,36 @@ values
 
 with
     sub_st
+    --submission stats
     as
     (
         select s.challenge_id,
-            sum(ISNULL(s.total_submissions, 0)) as sum_total_submissions,
-            sum(ISNULL(s.total_accepted_submissions, 0)) as sum_total_accepted_submissions
+            sum(s.total_submissions) as sum_total_submissions,
+            sum(s.total_accepted_submissions) as sum_total_accepted_submissions
         from submission_stats s
         group by challenge_id
     ),
     view_st
+    --view stats
     as
     (
         select v.challenge_id,
-            sum(ISNULL(v.total_views, 0)) as sum_total_views,
-            sum(ISNULL(v.total_unique_views, 0)) as sum_total_unique_views
+            sum(v.total_views) as sum_total_views,
+            sum(v.total_unique_views) as sum_total_unique_views
         from view_stats v
         group by v.challenge_id
     ),
-    stats
+    stats -- all stats
     as
     (
         select ch.challenge_id, ch.college_id,
-            sum(ISNULL(s.sum_total_submissions, 0)) as sum_total_submissions,
-            sum(ISNULL(s.sum_total_accepted_submissions, 0)) as sum_total_accepted_submissions,
-            sum(ISNULL(v.sum_total_views, 0)) as sum_total_views,
-            sum(ISNULL(v.sum_total_unique_views, 0)) as sum_total_unique_views
+            sum(s.sum_total_submissions) as sum_total_submissions,
+            sum(s.sum_total_accepted_submissions) as sum_total_accepted_submissions,
+            sum(v.sum_total_views) as sum_total_views,
+            sum(v.sum_total_unique_views) as sum_total_unique_views
         from challenges ch
             left join view_st v on v.challenge_id = ch.challenge_id
-            left join sub_st as s on v.challenge_id = s.challenge_id
+            left join sub_st as s on s.challenge_id = ch.challenge_id
         group by ch.challenge_id , ch.college_id
     )
 select c.contest_id, hacker_id, name,
@@ -150,12 +152,11 @@ from stats s
     inner join colleges col on s.college_id = col.college_id
     inner join contests c on c.contest_id = col.contest_id
 group by c.contest_id, hacker_id, name
-having 
-sum (ISNULL(s.sum_total_submissions, 0)) + 
-    sum(ISNULL(s.sum_total_accepted_submissions, 0)) +
-    sum(ISNULL(s.sum_total_views, 0)) +
-    sum(ISNULL(s.sum_total_unique_views, 0))>  0
+ having 
+ (   
+     sum(ISNULL(s.sum_total_submissions, 0)) + 
+     sum(ISNULL(s.sum_total_accepted_submissions, 0)) +
+     sum(ISNULL(s.sum_total_views, 0)) +
+     sum(ISNULL(s.sum_total_unique_views, 0))
+ )>  0
 order by contest_id
-
-
-
