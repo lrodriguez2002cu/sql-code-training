@@ -74,38 +74,42 @@ values
 
 declare
 @user int,
-@submission_id int;
+@submission_id int,
+@addExtra bit;
 
-select @user = 53473 , @submission_id = 1234;
+if @addExtra = 1 begin
 
-insert into submissions
-values
-    --extra
-    ('2016-03-02', @submission_id + 1, @user, 15),
-    --extra
-    ('2016-03-03', @submission_id + 2, @user, 15),
-    --extra
-    ('2016-03-04', @submission_id + 3, @user, 15),
-    --extra
-    ('2016-03-05', @submission_id + 4, @user, 15),
-    --extra
-    ('2016-03-06', @submission_id + 5, @user, 15);
+    select @user = 53473 , @submission_id = 1234;
+
+    insert into submissions
+    values
+        --extra
+        ('2016-03-02', @submission_id + 1, @user, 15),
+        --extra
+        ('2016-03-03', @submission_id + 2, @user, 15),
+        --extra
+        ('2016-03-04', @submission_id + 3, @user, 15),
+        --extra
+        ('2016-03-05', @submission_id + 4, @user, 15),
+        --extra
+        ('2016-03-06', @submission_id + 5, @user, 15);
 
 
-insert into submissions
-values
-    --extra
-    ('2016-03-02', 22403, 53473, 15
+    insert into submissions
+    values
+        --extra
+        ('2016-03-02', 22403, 53473, 15
 ),
-    --extra
-    ('2016-03-03', 22403, 53473, 15),
-    --extra
-    ('2016-03-04', 22403, 53473, 15),
-    --extra
-    ('2016-03-05', 22403, 53473, 15),
-    --extra
-    ('2016-03-06', 22403, 53473, 15);
+        --extra
+        ('2016-03-03', 22403, 53473, 15),
+        --extra
+        ('2016-03-04', 22403, 53473, 15),
+        --extra
+        ('2016-03-05', 22403, 53473, 15),
+        --extra
+        ('2016-03-06', 22403, 53473, 15);
 
+end;
 
 
 -- Julia conducted a 15 days of learning SQL contest. The start date of the contest was March 01, 2016 and the
@@ -117,17 +121,16 @@ values
 -- lowest hacker_id. The query should print this information for each day of the contest, sorted by the date.
 
 with
-    hackers_each_day
-    as
-    (
-        select s.hacker_id as hackers_each_day_id, count(distinct s.submission_id) as submissions_count, count(distinct submission_date) as numberof_dates,
-            min(submission_date) as min_date, max(submission_date) as max_date
-        from submissions s
-            inner join hackers h on h.hacker_id = s.hacker_id
-        group by s.hacker_id
-        having count (distinct submission_date) >= (select count(distinct submission_date)
-        from submissions)
-    ) ,
+    -- hackers_each_day
+    -- as
+    -- (
+    --     select s.hacker_id as hackers_each_day_id, count(distinct s.submission_id) as submissions_count, count(distinct submission_date) as numberof_dates,
+    --         min(submission_date) as min_date, max(submission_date) as max_date
+    --     from submissions s
+    --         inner join hackers h on h.hacker_id = s.hacker_id
+    --     group by s.hacker_id
+    --     --having count (distinct submission_date) >= (select count(distinct submission_date) from submissions)
+    -- ) ,
     ranking_by_date
     as
     (
@@ -137,7 +140,7 @@ with
             rank()  over (partition by submission_date order by count(submission_id) desc, s.hacker_id) as rank_a_day
         from submissions s
             inner join hackers h on h.hacker_id = s.hacker_id
-            inner join hackers_each_day d on h.hacker_id = d.hackers_each_day_id
+          --  inner join hackers_each_day d on h.hacker_id = d.hackers_each_day_id
         group by submission_date, s.hacker_id, h.name
     )
 
@@ -146,15 +149,108 @@ from ranking_by_date
 where rank_a_day = 1
 order by submission_date
 
--- hackers who submitted every day
-select hacker_id, count(distinct submission_date)  as numberof_dates, submission_date, count(distinct hacker_id) unique_hackers
-from submissions
-group by hacker_id
-having /*count(submission_id) > 0 and*/ count(submission_date) >1-- 6--(select count (distinct submission_date) from  submissions)
+
+--  tets 
+declare @submission_date date = '2016-03-03';
 
 
-select count (distinct submission_date)
+-- submission dates for date 
+select hacker_id, count(distinct submission_date) as submission_dates_before, 
+(count(distinct submission_date) - datediff(day, (select min(submission_date)), @submission_date) -1) as everyday_before_if_zero, 
+datediff(day, @submission_date,(select min(submission_date))) as diff_to_min
 from submissions
+where submission_date <= @submission_date
+group by hacker_id;
+
+
+WITH
+    DistinctSubmissionDates
+    AS
+    (
+        SELECT DISTINCT submission_date --, min(submission_date) as min_date, max(submission_date) as max_date
+        FROM submissions 
+    ),
+    min_max as ( -- for convenience
+        SELECT DISTINCT 
+        min(submission_date) as min_date, max(submission_date) as max_date
+        FROM submissions 
+    ),
+   subs_info as (
+    SELECT
+        s.hacker_id as hackers_each_day_id,
+        d.submission_date,
+        COUNT(DISTINCT s.submission_date) AS submission_dates_before,
+        (COUNT(DISTINCT s.submission_date) - DATEDIFF(day, (select top 1 min_date from min_max), d.submission_date) - 1) AS everyday_before_if_zero,
+        DATEDIFF(day, d.submission_date, (select  top 1 min_date from min_max)) AS diff_to_min
+    FROM submissions s
+        JOIN DistinctSubmissionDates d
+        ON s.submission_date <= d.submission_date
+    GROUP BY hacker_id, d.submission_date
+), 
+hackers_each_day as (
+    select *
+    from subs_info si
+    where si.everyday_before_if_zero = 0
+),
+ranking_by_date as (
+    select s.submission_date, s.hacker_id, h.name,    
+    rank()  over (partition by s.submission_date order by count(submission_id) desc, s.hacker_id) as rank_a_day
+    from submissions s
+    inner join hackers h on h.hacker_id = s.hacker_id
+    --inner join hackers_each_day d on h.hacker_id = d.hackers_each_day_id and d.submission_date = s.submission_date
+    group by s.submission_date, s.hacker_id, h.name
+)
+
+select cast (r.submission_date as date), 
+count(*) over (partition by d.submission_date) as total_unique_hackers,
+ hacker_id, name
+from ranking_by_date r
+inner join hackers_each_day d on d.submission_date = r.submission_date  
+where rank_a_day = 1
+order by r.submission_date
+
+------------------------
+
+WITH
+    DistinctSubmissionDates
+    AS
+    (
+        SELECT DISTINCT submission_date
+        --, min(submission_date) as min_date, max(submission_date) as max_date
+        FROM submissions
+    ),
+    min_max
+    as
+    (
+        -- for convenience
+        SELECT DISTINCT
+            min(submission_date) as min_date, max(submission_date) as max_date
+        FROM submissions
+    ),
+    subs_info
+    as
+    (
+        SELECT
+            s.hacker_id as hackers_each_day_id,
+            d.submission_date,
+            --FORMAT(d.submission_date, 'd', 'en-US') as date_str ,
+            COUNT(DISTINCT s.submission_date) AS submission_dates_before,
+            (COUNT(DISTINCT s.submission_date) - DATEDIFF(day, (select top 1 min_date from min_max), d.submission_date) - 1) AS everyday_before_if_zero,
+            DATEDIFF(day, (select top 1 min_date from min_max), d.submission_date ) AS diff_to_min
+        FROM submissions s
+            JOIN DistinctSubmissionDates d
+            ON s.submission_date <= d.submission_date
+        GROUP BY hacker_id, d.submission_date
+    )
+    select * from  subs_info    
+    where everyday_before_if_zero = 0
+
+
+
+
+
+-- select count (distinct submission_date)
+-- from submissions
 -- 2016-03-01 4 20703 Angela
 -- 2016-03-02 2 79722 Michael
 -- 2016-03-03 2 20703 Angela
