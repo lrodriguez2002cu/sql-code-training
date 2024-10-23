@@ -34,5 +34,5 @@ select x, y
 from ranked r
 where concat(y, '-', x) in (select concat(x, '-', y)
 from ranked f
-where f.rank > r.rank)  
+where f.rank > r.rank)  -- by considering only the ones with higher ranks eliminate duplicities.
 
