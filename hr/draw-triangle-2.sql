@@ -8,18 +8,15 @@
 -- * * 
 -- *
 
-with
-    numbers
-    as
-    (
-                    SELECT
-                20 AS n
-        UNION ALL
-            SELECT
-                n - 1
-            FROM numbers
-            where  n > 0
-    )
+with numbers as (
+    SELECT
+        20 AS n
+    UNION ALL
+        SELECT
+        n - 1
+    FROM numbers
+    where  n > 0
+)
 -- note the space between *
-select REPLICATE(' *', n)
-from numbers;
+select REPLICATE(' *', n)  from numbers
+order by n asc;
