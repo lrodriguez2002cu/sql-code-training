@@ -1,4 +1,4 @@
--- Source: https://www.hackerrank.com/challenges/the-pads/problem?isFullScreen=true
+-- https://www.hackerrank.com/challenges/the-pads/problem?isFullScreen=true
 
 -- 1. Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical
 -- (i.e.: enclosed in parentheses). For

@@ -1,3 +1,5 @@
+-- https://www.hackerrank.com/challenges/print-prime-numbers/problem?isFullScreen=true
+
 -- Write a query to print all prime numbers less than or equal to . Print your
 -- result on a single line, and use the ampersand character as your separator (instead of a space).
 
@@ -9,7 +11,7 @@ WITH
                 1 AS n
         UNION ALL
             SELECT
-            n + 1
+                n + 1
             FROM numbers
             where  n < 1000
     )

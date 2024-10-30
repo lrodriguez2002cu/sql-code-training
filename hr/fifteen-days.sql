@@ -1,3 +1,5 @@
+-- https://www.hackerrank.com/challenges/15-days-of-learning-sql/problem?isFullScreen=true
+
 -- Julia conducted a 15 days of learning SQL contest. The start date of the contest was March 01, 2016 and the
 -- end date was March 15, 2016. 
 
